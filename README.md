@@ -36,7 +36,53 @@ While not ideal, this can be useful where the other forms are not usable.
 
 The config is provided as JSON in an environment variable (be careful!)
   
-### Usage
+
+## JSON Format
+Configuration information should be stored as JSON, and JuiceConfig understands String, Integer and Boolean values.
+
+Nested data structures are supported, and JuiceConfig flattens out the structure automatically. For example, the path `employee.address.street` could be used to access any of the following configurations.
+
+Fully nested:  
+
+```json
+{
+  "employee": {
+    "address": {
+      "street": "Victoria Avenue"
+    }
+  }
+}
+```
+
+Partly nested:  
+```json
+{
+  "employee.address": {
+    "street": "Victoria Avenue"
+  }
+}
+```
+```json
+{
+  "employee": {
+    "address.street": "Victoria Avenue"
+  }
+}
+```
+
+Flattened:  
+```json
+{
+  "employee.address.street": "Victoria Avenue"
+}
+```
+
+
+
+
+
+
+## Usage
 
 ```golang
 import "github.com/tooltwist/go-juice-config/juiceconfig"
@@ -58,7 +104,7 @@ intValue, err := juiceconfig.GetInt("database.port", 3306)
 boolValue, err := juiceconfig.GetBool("database.encrypted", true)
 ```
 
-If an error occurs, all subsequent calls will also fail. This allows you to perform multiple operations and check for errors at the end.
+If an error occurs, all subsequent calls will also fail. This allows you to perform multiple operations and ignore errors, then check for an error at the end.
 
 ```golang
 hostname, _ := juiceconfig.GetString("database.hostname", "http://myDatabase.com")
@@ -74,5 +120,12 @@ if juiceconfig.WasError() {
 The error status can be reset
 ```golang
 juiceconfig.ResetError()
+```
+
+If you wish to load additional configurations, to from a location not specified by JUICE_CONFIG, use the Load function. The same functions and error checking functions can be used as described above.
+
+```golang
+myConfig := juiceconfig.ResetError("file:::/path/to/my/config/file.json")
+stringValue, err := myConfig.GetString("variable.name")
 ```
 
