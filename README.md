@@ -38,3 +38,41 @@ The config is provided as JSON in an environment variable (be careful!)
   
 ### Usage
 
+```golang
+import "github.com/tooltwist/go-juice-config/juiceconfig"
+```
+
+Configuration values can be accessed from the default configuration specified by the JUICE_CONFIG environment varaible.
+
+```golang
+stringValue, err := juiceconfig.GetString("database.hostname")
+intValue, err := juiceconfig.GetInt("database.port")
+boolValue, err := juiceconfig.GetBool("database.encrypted")
+```
+
+Default values can be provided.
+
+```golang
+stringValue, err := juiceconfig.GetString("database.hostname", "http://myDatabase.com")
+intValue, err := juiceconfig.GetInt("database.port", 3306)
+boolValue, err := juiceconfig.GetBool("database.encrypted", true)
+```
+
+If an error occurs, all subsequent calls will also fail. This allows you to perform multiple operations and check for errors at the end.
+
+```golang
+hostname, _ := juiceconfig.GetString("database.hostname", "http://myDatabase.com")
+port, _ := juiceconfig.GetInt("database.port", 3306)
+isEncrypted, _ := juiceconfig.GetBool("database.encrypted", true)
+if juiceconfig.WasError() {
+  fmt.Printf("Fatal Error: Could not access application configuration: %s\n", juiceconfig.ErrorMessage())  
+	fmt.Printf("Shutting down.\n")
+  os.Exit(1)
+}
+```
+
+The error status can be reset
+```golang
+juiceconfig.ResetError()
+```
+
