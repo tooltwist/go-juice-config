@@ -16,11 +16,25 @@ Managing configurations as an application passes from development through to pro
 To solve these problems, JuiceConfig can be used by an application to seamlessly switch where config information is stored. An environment variable (JUICE_CONFIG) specifies where to find the configuration (but does not itself provide access to the configuration resources).
 
 
-### JUICE_CONFIG
+## JUICE_CONFIG
 
-  **file:::<path>** - access the config from a JSON file  
-  **secretes_manager:::<region>:::<secret_name>** - config is stored in AWS Secrets Manager  
-  **environment:::<environment_variable_name>** - config is provided as JSON in an environment variable (be careful!)
+#### JSON File
+To access the config from a JSON file, set JUICE_CONFIG to:
+
+> file:::&lt;/path/to/config/file.json&gt;
+
+
+#### AWS Secrets Manager
+This is the best place to store your configuration for Amazon ECS and EC2 deployments.
+
+> secrets_manager:::&lt;region&gt;:::&lt;secret_name&gt;
+
+#### Environment Variable
+While not ideal, this can be useful where the other forms are not usable. 
+
+> environment:::&lt;environment_variable_name&gt;
+
+The config is provided as JSON in an environment variable (be careful!)
   
 ### Usage
 
