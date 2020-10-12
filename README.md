@@ -12,8 +12,9 @@ Managing configurations as an application passes from development through to pro
 
 - Environment variables are too easy for hackers to access.
 
+To solve these problems, JuiceConfig allows an application to seamlessly switch where config information is stored. As the application is deploymented in different environments, an variable can specify where to find the configuration. The application does not need to change for the different environments, or contain configuration information, or provide switching between configurations.
 
-To solve these problems, JuiceConfig can be used by an application to seamlessly switch where config information is stored. An environment variable (JUICE_CONFIG) specifies where to find the configuration (but does not itself provide access to the configuration resources).
+This is particularly useful when deploying Docker images, because a single image can be deployed across multiple deployments, without modification. This reduces the chance of bugs being introduced when an application is deployed to production.
 
 
 ## JUICE_CONFIG
@@ -79,9 +80,6 @@ Flattened:
 
 
 
-
-
-
 ## Usage
 
 ```golang
@@ -129,3 +127,6 @@ myConfig := juiceconfig.ResetError("file:::/path/to/my/config/file.json")
 stringValue, err := myConfig.GetString("variable.name")
 ```
 
+## Non-JSON Config files
+
+In some cases it is necessary to insert configuration variables into config files that are not accessed via JuiceConfig. For example, the Tomcat web server (Java) wants to access it's config files directly. For such situations, the NodeJS equivalent of this library can be used. See `node-juice-config` for details.
