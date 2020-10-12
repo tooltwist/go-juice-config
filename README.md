@@ -18,6 +18,7 @@ This is particularly useful when deploying Docker images, because a single image
 
 
 ## JUICE_CONFIG
+The `JUICE_CONFIG` environment variable specifies the default location to access configuration information. To switch between different types, the prefix of the "URL" can be changed, as shown by the followinf supported locations. This list is expected to increase over time, and feel free to contribute to this project.
 
 #### JSON File
 To access the config from a JSON file, set JUICE_CONFIG to:
