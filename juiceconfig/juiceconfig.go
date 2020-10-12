@@ -1,3 +1,5 @@
+/*juiceconfig Abstract configurations between JSON file, Secrets Manager, and environment variables.
+ */
 package juiceconfig
 
 import (
