@@ -108,7 +108,7 @@ func Load(url string) (*JuiceConfig, error) {
 	newConfig := map[string]*jason.Value{}
 	err = flattenConfig(&newConfig, "", config)
 	if err != nil {
-		fmt.Printf("Error flattening config: ", err)
+		fmt.Printf("Error flattening config: %+v\n", err)
 		return obj, obj.setError("Error flattening config [" + err.Error() + "]")
 	}
 	obj.config = &newConfig
@@ -137,14 +137,14 @@ func flattenConfig(newConfig *(map[string](*jason.Value)), prefix string, config
 
 		// See if it is an Object
 		obj, objErr := value.Object()
-		if objErr == jason.ErrNotObject {
-
-			// Save this value
-			(*newConfig)[path] = value
-		} else if objErr == nil {
+		if objErr == nil {
 
 			// Add the values within this object
 			flattenConfig(newConfig, path+".", obj)
+		} else {
+
+			// Not an object - save this value
+			(*newConfig)[path] = value
 		}
 	}
 	return nil
